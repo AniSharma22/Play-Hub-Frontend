@@ -1,0 +1,92 @@
+<div class="grid-background"></div>
+<div class="native">
+  <div class="flex w-full h-full flex-column justify-content-between">
+    <div class="align-self-end top-circle mt-4">
+      <img
+        ngSrc="./assets/purple-circle.png"
+        width="302"
+        height="302"
+        priority
+      />
+    </div>
+    <div class="align-self-end mr-4 mb-6">
+      <img
+        ngSrc="./assets/purple-circle.png"
+        width="220"
+        height="220"
+        priority
+      />
+    </div>
+  </div>
+</div>
+
+<div class="overlay-content flex justify-content-center align-items-center">
+  <div class="container">
+    <div class="w-auto h-auto mx-2 my-4">
+      <h1>Login</h1>
+      <p>Glad you are back.!</p>
+      <form [formGroup]="form" (ngSubmit)="onSubmit()">
+        <!-- Email Field -->
+        <div class="mt-6">
+          <p-floatLabel>
+            <input
+              pInputText
+              id="email"
+              class="custom-input w-full"
+              type="email"
+              formControlName="email"
+            />
+            <label for="email">Email</label>
+          </p-floatLabel>
+        </div>
+
+        <!-- Password Field -->
+        <div class="input-field mt-5">
+          <p-floatLabel>
+            <p-password
+              [feedback]="false"
+              [toggleMask]="true"
+              formControlName="password"
+            />
+            <label class="w-full" for="password" id="password">Password</label>
+          </p-floatLabel>
+        </div>
+
+        <!-- Remember Me and Forgot Password -->
+        <div class="flex justify-content-between align-items-center my-4">
+          <div class="remember-me">
+            <input type="checkbox" id="rememberMe" />
+            <label for="rememberMe">Remember Me</label>
+          </div>
+          <a routerLink="/forgot-password" class="forgot-password-link"
+            >Forgot Password?</a
+          >
+        </div>
+
+        <!-- Submit Button -->
+        <div class="flex justify-content-center my-4">
+          <button
+            pButton
+            pRipple
+            type="submit"
+            [loading]="loading"
+            [disabled]="!form.valid"
+            iconPos="right"
+            label="Login"
+            class="custom-purple-button w-full"
+          ></button>
+        </div>
+      </form>
+
+      <div class="separator opacity-20">
+        <span>Or</span>
+      </div>
+
+      <div class="card flex justify-content-center gap-3 custom-link">
+        <a routerLink="/signup" class="custom-link-text"
+          >Don’t have an account ? Signup</a
+        >
+      </div>
+    </div>
+  </div>
+</div>

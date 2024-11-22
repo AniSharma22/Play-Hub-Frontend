@@ -1,0 +1,22 @@
+.photos-container {
+  max-width: 100%; /* Full-width container */
+  overflow-x: auto; /* Enable horizontal scrolling */
+  overflow-y: hidden; /* Hide vertical overflow */
+  white-space: nowrap; /* Prevent items from wrapping */
+}
+
+.photo-item {
+  flex: 0 0 20rem; /* Fixed width of 20rem for each item */
+  display: inline-flex; /* Ensure items stay in a row */
+}
+
+.photo-item:hover {
+  border: 2px solid whitesmoke;
+  cursor: pointer;
+}
+
+.image-container {
+  position: relative;
+  width: 100%;
+  height: 90%; /* Adjust to leave space for the title */
+}

@@ -1,0 +1,262 @@
+<div class="grid-background"></div>
+<div class="native">
+  <app-navbar />
+  <div class="main-content-container">
+    <div class="w-9 h-full flex justify-content-center align-items-center">
+      <div class="w-full h-30rem border-left-3 flex flex-column">
+        <div
+          class="w-full flex items-center justify-content-between pl-4 h-6rem"
+        >
+          <div class="main-title">Table-Tennis</div>
+        </div>
+
+        <div class="ml-4 h-full flex">
+          <div class="game-left-container w-30rem flex flex-column">
+            <div class="h-20rem">
+              <div class="flex w-full justify-content-between">
+                <i
+                  class="pi-arrow-left pi m-3 prime-icon"
+                  (click)="triggerBack()"
+                ></i>
+                @if (selectedSlot?.is_booked) {
+                  <span class="mr-4 align-self-center" style="color: #e57373">
+                    <i
+                      class="pi pi-circle-fill"
+                      style="color: red; font-size: 12px"
+                    ></i>
+                    Full Booked
+                  </span>
+                } @else if (selectedSlot?.start_time! < currentTime$()) {
+                  <span class="mr-4 align-self-center" style="color: #e57373">
+                    <i
+                      class="pi pi-circle-fill"
+                      style="color: red; font-size: 12px"
+                    ></i>
+                    Slot Passed
+                  </span>
+                } @else if (!selectedSlot?.booked_users) {
+                  <span class="mr-4 align-self-center" style="color: #81c784">
+                    <i
+                      class="pi pi-circle-fill"
+                      style="color: green; font-size: 12px"
+                    ></i>
+                    Available
+                  </span>
+                } @else {
+                  <span class="mr-4 align-self-center" style="color: #ffeb3b">
+                    <i
+                      class="pi pi-circle-fill"
+                      style="color: #ffd54f; font-size: 12px"
+                    ></i>
+                    Partially Available
+                  </span>
+                }
+              </div>
+
+              <div
+                class="m-4 ml-8 flex align-items-center justify-content-start"
+              >
+                <i class="pi pi-clock"></i>
+                <span class="ml-2"
+                  >{{ selectedSlot?.start_time ?? '9:00' | timePipe }} -
+                  {{ selectedSlot?.end_time ?? '18:00' | fullTimePipe }}</span
+                >
+              </div>
+              <div class="m-4 ml-8 flex justify-content-start">
+                <i class="pi pi-users"></i>
+                <span class="ml-2">Booked Users :</span>
+              </div>
+              <div
+                class="m-4 ml-8 flex flex-column justify-content-center ml-4"
+              >
+                @if (selectedSlot?.booked_users?.length) {
+                  @for (user of selectedSlot?.booked_users; track $index) {
+                    <div class="my-2 ml-6 flex align-items-center">
+                      <i class="pi pi-circle-fill" style="font-size: 12px"></i>
+                      <span class="ml-2">{{ user }}</span>
+                    </div>
+                  }
+                } @else {
+                  <div class="my-2">
+                    <span class="ml-6 text-color-secondary"
+                      >No Booked Users</span
+                    >
+                  </div>
+                }
+              </div>
+            </div>
+
+            <div class="flex-grow-1 align-content-center">
+              <div class="flex gap-4 justify-content-center">
+                <div class="flex justify-content-center">
+                  <button
+                    pButton
+                    pRipple
+                    [disabled]="
+                      selectedSlot?.is_booked ||
+                      selectedSlot?.start_time! < currentTime$() ||
+                      selectedSlot?.booked_users?.includes(
+                        this.authService.user$()?.username!
+                      )
+                    "
+                    label="BOOK"
+                    [loading]="loadingBooking"
+                    (click)="bookSlot()"
+                    iconPos="right"
+                    class="custom-purple-button w-10rem"
+                  ></button>
+                </div>
+                <div class="card flex justify-content-center">
+                  <button
+                    pButton
+                    pRipple
+                    label="INVITE"
+                    [disabled]="
+                      selectedSlot?.is_booked ||
+                      selectedSlot?.start_time! < currentTime$()
+                    "
+                    (click)="fetchUsers($event)"
+                    class="custom-purple-button w-10rem"
+                  ></button>
+                  <p-overlayPanel #op>
+                    <div class="flex flex-column gap-3 w-25rem">
+                      <div>
+                        <span class="font-medium text-900 block mb-2"
+                          >Search any user</span
+                        >
+                        <p-inputGroup>
+                          <input
+                            pInputText
+                            placeholder="Enter Username or email"
+                            [(ngModel)]="searchedUser"
+                            (ngModelChange)="filterUsers()"
+                            class="w-25rem"
+                          />
+                        </p-inputGroup>
+                      </div>
+                      <div>
+                        <span class="font-medium text-900 block mb-2"
+                          >Users</span
+                        >
+                        <ul
+                          class="list-none p-0 m-0 flex flex-column gap-3 h-18rem overflow-y-scroll"
+                        >
+                          <li
+                            *ngFor="let user of filteredUsers"
+                            class="flex align-items-center gap-2 mr-2"
+                          >
+                            <img [src]="user.image_url" style="width: 32px" />
+                            <div class="w-15rem">
+                              <span
+                                class="font-medium text-overflow-ellipsis w-full ellipsis"
+                                >{{ user.username }}</span
+                              >
+                              <div
+                                class="text-sm text-color-secondary text-overflow-ellipsis ellipsis"
+                              >
+                                {{ user.email }}
+                              </div>
+                            </div>
+                            <div
+                              class="flex align-items-center gap-2 text-color-secondary ml-auto text-sm"
+                            >
+                              <button
+                                pButton
+                                pRipple
+                                label="Invite"
+                                class="overlay-invite-btn"
+                                (click)="inviteUser(user.user_id)"
+                              ></button>
+                            </div>
+                          </li>
+                        </ul>
+                      </div>
+                    </div>
+                  </p-overlayPanel>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="game-right-container flex-grow-1">
+            <div class="flex flex-column h-full">
+              <div
+                class="font-semibold text-xl h-3rem flex justify-content-between align-items-center"
+              >
+                <div class="flex-1 text-center">Morning</div>
+                <div class="flex-1 text-center">Afternoon</div>
+                <div class="flex-1 text-center">Evening</div>
+              </div>
+              <div class="flex-grow-1 border-top-1">
+                <div class="h-full w-full flex justify-content-between mt-2">
+                  <div class="flex-1 flex flex-column gap-2 text-center">
+                    @for (slot of morningSlots; track slot.slot_id) {
+                      <div>
+                        <button
+                          pButton
+                          pRipple
+                          [style]="{
+                            backgroundImage: getGradientBackground(slot),
+                          }"
+                          [label]="
+                            (slot.start_time | timePipe) +
+                            ' - ' +
+                            (slot.end_time | fullTimePipe)
+                          "
+                          class="slot-btn"
+                          (click)="selectSlot(slot)"
+                        ></button>
+                      </div>
+                    }
+                  </div>
+
+                  <div class="flex-1 flex flex-column gap-2 text-center">
+                    @for (slot of afternoonSlots; track slot.slot_id) {
+                      <div>
+                        <button
+                          pButton
+                          pRipple
+                          [style]="{
+                            backgroundImage: getGradientBackground(slot),
+                          }"
+                          [label]="
+                            (slot.start_time | timePipe) +
+                            ' - ' +
+                            (slot.end_time | fullTimePipe)
+                          "
+                          class="slot-btn"
+                          (click)="selectSlot(slot)"
+                        ></button>
+                      </div>
+                    }
+                  </div>
+
+                  <div class="flex-1 flex flex-column gap-2 text-center">
+                    @for (slot of eveningSlots; track slot.slot_id) {
+                      <div>
+                        <button
+                          pButton
+                          pRipple
+                          [style]="{
+                            backgroundImage: getGradientBackground(slot),
+                            color: 'white',
+                          }"
+                          [label]="
+                            (slot.start_time | timePipe) +
+                            ' - ' +
+                            (slot.end_time | fullTimePipe)
+                          "
+                          class="slot-btn"
+                          (click)="selectSlot(slot)"
+                        ></button>
+                      </div>
+                    }
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

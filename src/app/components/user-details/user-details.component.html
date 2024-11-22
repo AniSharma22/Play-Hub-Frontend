@@ -1,0 +1,104 @@
+<div class="grid-background"></div>
+<div class="native">
+  <app-navbar />
+  <div class="main-content-container">
+    <div class="w-9 h-full flex justify-content-center align-items-center">
+      <div class="w-full h-30rem border-left-3 flex flex-column">
+        <div
+          class="w-full flex items-center justify-content-between pl-4 h-6rem"
+        >
+          <div class="main-title">{{ currentUser?.username ?? '' }}</div>
+        </div>
+
+        <!-- photos-container -->
+        <div class="h-full ml-4 user-details-container h-full flex flex-column">
+          <div>
+            <i
+              class="pi-arrow-left pi m-3 back-arrow"
+              (click)="triggerBack()"
+            ></i>
+          </div>
+          <div class="flex-grow-1 flex flex-column">
+            <div class="flex-grow-1 flex">
+              <div class="w-6rem">
+                <img
+                  src="https://play-hub.s3.ap-south-1.amazonaws.com/avatars/avatar1.png"
+                  class="img-element"
+                />
+              </div>
+              <div class="flex-grow-1 flex justify-content-between mx-4">
+                <div>
+                  <p>Email : {{ currentUser?.email }}</p>
+                  <p>Phone Number : {{ currentUser?.mobile_number }}</p>
+                </div>
+                <div>
+                  <p>Gender&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; : {{ currentUser?.gender }}</p>
+<!--                  <p>-->
+<!--                    Gender&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-->
+<!--                    : {{ currentUser?.gender }}-->
+<!--                  </p>-->
+                  <p>
+                    <p-dropdown
+                      [options]="games"
+                      [(ngModel)]="selectedGame"
+                      (onChange)="onGameSelect()"
+                      optionLabel="game_name"
+                      placeholder="Select a Game"
+                    />
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div
+            class="h-10rem game-details-container justify-content-between flex px-4"
+          >
+            <div>
+              <p>
+                Total Games :
+                {{
+                  (currentUserStats?.wins ?? 0) + (currentUserStats?.losses ?? 0)
+                }}
+              </p>
+              <p>
+                Wins&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:
+                {{ currentUserStats?.wins || 0}}
+              </p>
+              <p>
+                Losses&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:
+                {{ currentUserStats?.losses || 0 }}
+              </p>
+              <p>
+                Win Ratio&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; : {{ getWinRatio() }}
+              </p>
+            </div>
+
+            <div>
+              <p>Play-Time/day : {{ getPlayTimePerDay() }}</p>
+              <p>
+                Score&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:
+                {{ currentUserStats?.score?.toFixed(2) ?? 0 }}
+              </p>
+            </div>
+          </div>
+
+          <div class="h-4rem flex justify-content-end">
+            <div class="flex justify-content-end align-items-center h-full">
+              <button
+                pButton
+                pRipple
+                label="Delete user"
+                [disabled]="authService.user$()?.user_id === currentUser?.user_id"
+                (click)="deleteUser($event)"
+                [loading]="deleteLoading"
+                iconPos="right"
+                class="custom-red-button w-10rem mr-4"
+              ></button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!--        image container end-->
+    </div>
+  </div>
+</div>

@@ -1,0 +1,127 @@
+<div class="grid-background"></div>
+<div class="native">
+  <app-navbar />
+  <div class="main-content-container">
+    <div class="w-9 h-full flex justify-content-center align-items-center">
+      <div class="w-full h-30rem border-left-3 flex flex-column">
+        <div
+          class="w-full flex items-center justify-content-between pl-4 h-6rem"
+        >
+          <div class="main-title">Leaderboard</div>
+          <div class="card flex justify-content-center align-items-center">
+            <p-dropdown
+              [options]="games"
+              [(ngModel)]="selectedGame"
+              (onChange)="onGameSelect()"
+              optionLabel="game_name"
+              placeholder="Select a Game"
+            />
+          </div>
+        </div>
+        <!-- leaderboard-container -->
+
+        @if (leaderboard && leaderboard.length > 0) {
+          <div class="ml-4 h-full flex flex-column table-container">
+            <div class="h-4rem">
+              <div class="table-header h-2rem m-3 flex text-xl">
+                <div
+                  class="flex-1 pt-1 text-center text-overflow-ellipsis overflow-hidden whitespace-nowrap"
+                >
+                  RANKING
+                </div>
+                <div
+                  class="flex-1 pt-1 text-center text-overflow-ellipsis overflow-hidden whitespace-nowrap"
+                >
+                  NAME
+                </div>
+                <div
+                  class="flex-1 pt-1 text-center text-overflow-ellipsis overflow-hidden whitespace-nowrap"
+                >
+                  TOTAL GAMES
+                </div>
+                <div
+                  class="flex-1 pt-1 text-center text-overflow-ellipsis overflow-hidden whitespace-nowrap"
+                >
+                  WINS
+                </div>
+                <div
+                  class="flex-1 pt-1 text-center text-overflow-ellipsis overflow-hidden whitespace-nowrap"
+                >
+                  LOSS
+                </div>
+                <div
+                  class="flex-1 pt-1 text-center text-overflow-ellipsis overflow-hidden whitespace-nowrap"
+                >
+                  SCORE
+                </div>
+              </div>
+            </div>
+
+            <div
+              class="h-21rem bg-transparent mx-3 py-2 flex flex-column gap-4 text-xl overflow-y-scroll"
+            >
+              @if (leaderboard) {
+                @for (user of leaderboard; track $index) {
+                  <div class="flex">
+                    <div
+                      class="flex-1 text-center align-self-center text-overflow-ellipsis overflow-hidden whitespace-nowrap"
+                    >
+                      {{ $index + 1 }}.
+                    </div>
+                    <div
+                      class="flex-1 text-center overflow-hidden whitespace-nowrap"
+                    >
+                      <div
+                        class="flex w-full h-full justify-content-center align-items-center"
+                      >
+                        @if ($index == 0 || $index == 1 || $index == 2) {
+                          <img
+                            src="assets/medal{{ $index + 1 }}.png"
+                            class="h-2 w-2 mr-2"
+                          />
+                        }
+                        <span
+                          class="text-overflow-ellipsis align-self-center inline-block"
+                          style="max-width: calc(100% - 24px)"
+                        >
+                          {{ user.user_name }}
+                        </span>
+                      </div>
+                    </div>
+                    <div
+                      class="flex-1 text-center align-self-center text-overflow-ellipsis overflow-hidden whitespace-nowrap"
+                    >
+                      {{ user.total_games }}
+                    </div>
+                    <div
+                      class="flex-1 text-center align-self-center text-overflow-ellipsis overflow-hidden whitespace-nowrap"
+                    >
+                      {{ user.wins }}
+                    </div>
+                    <div
+                      class="flex-1 text-center align-self-center text-overflow-ellipsis overflow-hidden whitespace-nowrap"
+                    >
+                      {{ user.losses }}
+                    </div>
+                    <div
+                      class="flex-1 text-center align-self-center text-overflow-ellipsis overflow-hidden whitespace-nowrap"
+                    >
+                      {{ user.score.toFixed(2) }}
+                    </div>
+                  </div>
+                }
+              } @else {}
+            </div>
+          </div>
+        } @else {
+          <app-fallback>
+            <ng-container>
+              <div class="ml-4">No leaderboard 😂</div>
+            </ng-container>
+          </app-fallback>
+        }
+        <!--leaderboard container end-->
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,159 @@
+@import "primeng/resources/themes/lara-light-blue/theme.css";
+@import "primeng/resources/primeng.css";
+@import "primeicons/primeicons.css";
+@import "primeflex/primeflex.css";
+
+
+body {
+  font-family: "Raleway","sans-serif";
+  color:#E7E7E7;
+  margin:0;
+  padding:0;
+
+  -webkit-user-select: none; /* Safari */
+  -moz-user-select: none; /* Firefox */
+  -ms-user-select: none; /* Internet Explorer/Edge */
+  user-select: none; /* Standard syntax */
+}
+
+.main-content-container {
+  flex-grow: 1; /* Take remaining space */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.main-title {
+  font-size: 64px;
+  font-weight: bold;
+  color: white;
+}
+
+.search-bar {
+  background: #1d1d1d;
+  color: #4a4a4a;
+  padding: 8px;
+  font-size: 16px;
+  border: 2px solid black;
+  border-radius: 10px;
+  width: 100%;
+  max-width: 350px;
+  max-height: 50px;
+}
+
+.custom-purple-button {
+  background: linear-gradient(145deg, #530061, #6a006c) !important; /* Soft gradient */
+  border: 2px solid #282828 !important; /* Darker border for better contrast */
+  font-family: 'Raleway', sans-serif;
+  box-shadow: 0 8px 15px rgba(0, 0, 0, 0.4); /* Subtle shadow for depth */
+  color: white !important; /* Ensure text is visible on dark background */
+  border-radius: 12px; /* Slight rounding for a modern look */
+  transition: all 0.3s ease; /* Smooth transition for hover effects */
+}
+
+.custom-purple-button:hover {
+  background: linear-gradient(145deg, #6a006c, #530061) !important; /* Inverted gradient */
+  border-color: #6a006c !important; /* Slightly brighter border on hover */
+  box-shadow: 0 12px 20px rgba(0, 0, 0, 0.6); /* More pronounced shadow on hover */
+  transform: translateY(-3px); /* Slight lift effect */
+}
+
+.p-button-contrast {
+  background-color: transparent !important;
+  border: 2px solid #282828 !important; /* Dark border for contrast */
+  font-family: 'Raleway', sans-serif;
+  color: #e0e0e0 !important; /* Light grey text for visibility on dark themes */
+  border-radius: 12px; /* Matching rounded corners */
+  transition: all 0.3s ease; /* Smooth transition for hover effects */
+}
+
+.p-button-contrast:hover {
+  border-color: #6a006c !important; /* Border color matches purple hover */
+  color: #d3d3d3 !important; /* Lighter text on hover for better contrast */
+  transform: translateY(-3px); /* Slight lift effect */
+}
+
+
+/* ------------------------------------------------- SCROLLBAR  ------------------------------------*/
+
+/* width */
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: white;
+  border-radius: 15px;
+}
+
+/* ------------------------------------------------ GRID BACKGROUND ------------------------------------*/
+
+/* Full-page grid background */
+.grid-background {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: #0f0f0f; /* Solid dark background */
+  z-index: -1; /* Place behind all content */
+
+  /* Grid lines with opacity */
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.02) 2px, transparent 2px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.02) 2px, transparent 2px); /* Vertical lines */
+  background-size: 100px 100px; /* Set grid square size */
+}
+
+/* Main content styling */
+.native {
+  position: relative;
+  color: white;
+  font-family: 'Raleway', sans-serif;
+  height: 100vh; /* Full viewport height */
+  z-index: 1; /* Ensure content appears above the grid */
+  display: flex;
+  flex-direction: column;
+}
+
+/* ---------------------------------------------- PRIME NG COMPONENTS ------------------------------------*/
+
+.p-dropdown {
+background: transparent;
+box-shadow:none;
+height:40px;
+  width:12rem;
+}
+
+.p-dropdown-items{
+  background: transparent;
+}
+
+.p-password input {
+  width: 302.4px; /* Set your desired width */
+  background: transparent;
+  box-shadow:none;
+}
+
+.p-dialog-content{
+  overflow-y: hidden;
+}
+.p-inputtext{
+  width: 100%;
+}
+
+.prime-icon:hover{
+  transform: scale(1.2);
+  cursor: pointer;
+}
+
+
+
+
+

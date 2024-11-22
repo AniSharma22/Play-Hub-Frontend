@@ -1,0 +1,85 @@
+/* Style for the logo container */
+.logo-container {
+  width: 150px;    /* Set desired width */
+  height: 50px;   /* Set desired height */
+  display: flex;   /* Center image within the container */
+  justify-content: center;
+  align-items: center;
+  overflow: hidden; /* Hide any overflow */
+  border-radius: 10px; /* Optional rounded corners */
+}
+
+/* Style for the logo image */
+.logo-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* Ensures the image covers the container without distortion */
+}
+
+.logo {
+  font-weight: 900;
+  font-size: 32px;
+  background: linear-gradient(
+    to right,
+    #00cfff,
+    #a067ff
+  ); /* Gradient background */
+  -webkit-background-clip: text; /* For webkit-based browsers */
+  color: transparent; /* Make the text transparent to show the gradient */
+}
+
+/* Link Styling */
+.flex a {
+  font-family: 'Raleway', sans-serif;
+  padding-top:10px;
+  font-size: 14px;
+  color: white; /* Original color of the links */
+  text-decoration: none;
+  transition: color 0.3s ease, text-decoration 0.3s ease;
+}
+
+/* Hover Effect */
+.flex a:hover {
+  color: #530061; /* Hover color */
+  text-decoration: underline;
+  text-decoration-color: white; /* Underline color */
+  text-underline-offset: 8px; /* Adds space between text and underline */
+  cursor: pointer;
+}
+
+.profile-icon-container {
+  position: relative;
+  display: inline-block;
+}
+
+.profile-icon-container:hover .dropdown-menu {
+  display: block; /* Show on hover */
+}
+
+.dropdown-menu {
+  position: absolute;
+  border-radius: 10px;
+  font-weight:400;
+  top: 100%; /* Position below the avatar */
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: white;
+  color: black;
+  font-family: 'Raleway', sans-serif;
+  border: 1px solid #ccc;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  display: none; /* Hidden by default */
+  padding: 8px 0;
+  width: 100px;
+  text-align: center;
+  z-index: 1000;
+}
+
+.dropdown-item {
+  padding: 8px;
+  cursor: pointer;
+}
+
+.dropdown-item:hover {
+  background-color: #f0f0f0;
+}

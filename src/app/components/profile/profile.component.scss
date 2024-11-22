@@ -1,0 +1,17 @@
+::ng-deep .p-overlaypanel {
+  padding: 0;
+
+  h3{
+    padding-top:0;
+    margin-top:0;
+  }
+
+  .p-overlaypanel-content {
+    padding: 0;
+  }
+}
+
+.grid-cols-4 {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+}

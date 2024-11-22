@@ -1,0 +1,123 @@
+<div class="grid-background"></div>
+
+<div class="native">
+  <div class="flex w-full h-full flex-column justify-content-between">
+    <div class="align-self-end top-circle mt-4">
+      <img ngSrc="./assets/ellipse.png" width="302" height="302" priority />
+    </div>
+    <div class="align-self-end mr-4 mb-6">
+      <img ngSrc="./assets/ellipse.png" width="220" height="220" priority />
+    </div>
+  </div>
+</div>
+<p-toast />
+<div class="overlay-content flex justify-content-center align-items-center">
+  <div class="container">
+    <div class="w-auto h-auto mx-2 my-4">
+      <h1>Signup</h1>
+      <p>Just some details to get you in!</p>
+      <form [formGroup]="form" (ngSubmit)="onSubmit()">
+        <!-- Email Field -->
+        <div class="input-field my-4">
+          <p-floatLabel>
+            <input
+              pInputText
+              id="email"
+              class="w-full bg-transparent shadow-none"
+              type="email"
+              formControlName="email"
+            />
+            <label for="email">Email</label>
+          </p-floatLabel>
+        </div>
+
+        <!-- Phone Number Field -->
+        <div class="input-field my-4">
+          <p-floatLabel>
+            <input
+              pInputText
+              id="phone-no"
+              class="w-full bg-transparent shadow-none"
+              type="number"
+              formControlName="mobile"
+            />
+            <label for="phone-no">Phone No</label>
+          </p-floatLabel>
+        </div>
+
+        <!-- Gender Field -->
+        <div class="card flex justify-content-center input-field my-4 w-full">
+          <p-dropdown
+            [options]="[
+              { label: 'Male', value: 'male' },
+              { label: 'Female', value: 'female' },
+              { label: 'Other', value: 'other' },
+            ]"
+            optionLabel="label"
+            placeholder="Select a Gender"
+            class="custom-width"
+            formControlName="gender"
+          ></p-dropdown>
+        </div>
+
+        <!-- Password Field -->
+        <div class="input-field my-4">
+          <p-floatLabel>
+            <p-password formControlName="password">
+              <ng-template pTemplate="header">
+                <h6>Pick a password</h6>
+              </ng-template>
+              <ng-template pTemplate="footer">
+                <p-divider />
+                <p class="mt-2">Requirements</p>
+                <ul class="pl-2 ml-2 mt-0" style="line-height: 1.5">
+                  <li>At least one lowercase</li>
+                  <li>At least one uppercase</li>
+                  <li>At least one numeric</li>
+                  <li>Minimum 8 characters</li>
+                </ul>
+              </ng-template>
+            </p-password>
+            <label class="w-full" for="password" id="password">Password</label>
+          </p-floatLabel>
+        </div>
+
+        <!-- Confirm Password Field -->
+        <div class="input-field my-4">
+          <p-floatLabel>
+            <p-password
+              [feedback]="false"
+              [toggleMask]="true"
+              formControlName="confirmPassword"
+            />
+            <label class="w-full" for="password" id="confirmPassword"
+              >Confirm Password</label
+            >
+          </p-floatLabel>
+        </div>
+
+        <!-- Submit Button -->
+        <div class="flex justify-content-center my-4">
+          <button
+            pButton
+            pRipple
+            label="Signup"
+            [loading]="loading"
+            [disabled]="!form.valid"
+            iconPos="right"
+            class="custom-blue-button w-full"
+            type="submit"
+          ></button>
+        </div>
+      </form>
+      <div class="separator opacity-20">
+        <span>Or</span>
+      </div>
+      <div class="card flex justify-content-center gap-3 custom-link">
+        <a routerLink="/login" class="custom-link-text"
+          >Already Registered? Login</a
+        >
+      </div>
+    </div>
+  </div>
+</div>

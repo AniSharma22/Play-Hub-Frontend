@@ -1,0 +1,190 @@
+<div class="grid-background"></div>
+<div class="native">
+  <app-navbar />
+  <div class="main-content-container">
+    <div class="w-9 h-full flex justify-content-center align-items-center">
+      <div class="w-full h-30rem border-left-3 flex flex-column">
+        <div
+          class="w-full flex items-center justify-content-between pl-4 h-6rem"
+        >
+          <div class="main-title">Profile</div>
+        </div>
+
+        <!-- profile-container -->
+
+        <div class="h-full ml-4 flex flex-column">
+          <div class="flex justify-content-between w-full h-5rem mt-2">
+            <div class="flex ml-3">
+              <div
+                class="flex justify-content-center align-items-center border-circle"
+              >
+                <p-avatar
+                  [image]="selectedAvatar"
+                  size="xlarge"
+                  shape="circle"
+                  (click)="isEditable ? op.toggle($event) : null"
+                  [style]="{ cursor: isEditable ? 'pointer' : 'default' }"
+                ></p-avatar>
+
+                <p-overlayPanel #op>
+                  <div class="p-3">
+                    <h3 class="text-lg font-semibold mb-3 text-center">
+                      Choose an Avatar
+                    </h3>
+                    <div class="grid grid-cols-4 gap-3">
+                      <!-- First Row -->
+                      <div
+                        *ngFor="let avatar of AVATARS.slice(0, 4)"
+                        class="flex justify-center"
+                      >
+                        <p-avatar
+                          [image]="avatar"
+                          size="xlarge"
+                          shape="circle"
+                          [style]="{ cursor: 'pointer' }"
+                          (click)="selectAvatar(avatar, op)"
+                          [class.border-2]="avatar === selectedAvatar"
+                          [class.border-primary]="avatar === selectedAvatar"
+                        ></p-avatar>
+                      </div>
+                      <!-- Second Row -->
+                      <div
+                        *ngFor="let avatar of AVATARS.slice(4, 8)"
+                        class="flex justify-center"
+                      >
+                        <p-avatar
+                          [image]="avatar"
+                          size="xlarge"
+                          shape="circle"
+                          [style]="{ cursor: 'pointer' }"
+                          (click)="selectAvatar(avatar, op)"
+                          [class.border-2]="avatar === selectedAvatar"
+                          [class.border-primary]="avatar === selectedAvatar"
+                        ></p-avatar>
+                      </div>
+                    </div>
+                  </div>
+                </p-overlayPanel>
+              </div>
+              <div class="ml-3 align-content-center">
+                <p class="m-1 text-xl font-medium">{{ user()?.username }}</p>
+                <p class="m-1 text-color-secondary">{{ user()?.email }}</p>
+              </div>
+            </div>
+            <div class="flex justify-content-center align-items-center">
+              @if (isEditable) {
+                <button
+                  pButton
+                  pRipple
+                  label="Update"
+                  raised
+                  severity="success"
+                  [disabled]="!this.form.valid"
+                  (click)="onEdit()"
+                  class="w-6rem mr-4"
+                ></button>
+                <button
+                  pButton
+                  pRipple
+                  label="Cancel"
+                  raised
+                  severity="danger"
+                  (click)="cancelEdit()"
+                  class="w-6rem mr-4"
+                ></button>
+              } @else {
+                <button
+                  pButton
+                  pRipple
+                  label="Edit"
+                  raised
+                  (click)="onEdit()"
+                  class="custom-purple-button w-6rem mr-4"
+                ></button>
+              }
+            </div>
+          </div>
+
+          <form [formGroup]="form" class="flex-grow-1">
+            <div class="card flex justify-content-center">
+              <div class="flex w-full">
+                <div class="flex-1 flex flex-column m-4 gap-2">
+                  <div class="flex gap-2">
+                    <label for="username">Username</label>
+                    @if (isEditable) {
+                      <i class="pi pi-pencil" style="color: green"></i>
+                    }
+                  </div>
+                  <input
+                    class="shadow-none"
+                    pInputText
+                    id="username"
+                    placeholder="Full Name"
+                    formControlName="username"
+                    aria-describedby="username-help"
+                  />
+                </div>
+
+                <div class="flex-1 flex flex-column m-4 gap-2">
+                  <div class="flex gap-2">
+                    <label for="username">Phone Number</label>
+                    @if (isEditable) {
+                      <i class="pi pi-pencil" style="color: green"></i>
+                    }
+                  </div>
+                  <input
+                    class="shadow-none"
+                    pInputText
+                    id="phone-no"
+                    type="number"
+                    placeholder="Phone Number"
+                    formControlName="phoneNo"
+                    aria-describedby="username-help"
+                  />
+                </div>
+              </div>
+            </div>
+            <div>
+              <div class="flex w-full">
+                <div class="flex-1 flex flex-column m-4 gap-2">
+                  <div class="flex gap-2">
+                    <label for="username">Password</label>
+                    @if (isEditable) {
+                      <i class="pi pi-pencil" style="color: green"></i>
+                    }
+                  </div>
+                  <input
+                    class="shadow-none"
+                    pInputText
+                    id="password"
+                    placeholder="Password"
+                    formControlName="password"
+                    aria-describedby="username-help"
+                  />
+                </div>
+
+                <div class="flex-1 flex flex-column m-4 gap-2">
+                  <div class="flex gap-2">
+                    <label for="username">Confirm Password</label>
+                    @if (isEditable) {
+                      <i class="pi pi-pencil" style="color: green"></i>
+                    }
+                  </div>
+                  <input
+                    class="shadow-none"
+                    pInputText
+                    id="confirm-password"
+                    placeholder="Confirm Password"
+                    formControlName="confirmPassword"
+                    aria-describedby="username-help"
+                  />
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+        <!--        profile container end-->
+      </div>
+    </div>
+  </div>
+</div>

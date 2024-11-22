@@ -1,0 +1,261 @@
+<div class="grid-background"></div>
+<div class="native">
+  <app-navbar />
+
+  <p-dialog
+    [header]="header"
+    [modal]="true"
+    [(visible)]="visible"
+    [style]="{ width: '30rem' }"
+    [draggable]="false"
+    [resizable]="false"
+  >
+    <form
+      [formGroup]="gameForm"
+      (ngSubmit)="saveGameDetails()"
+      class="flex flex-column gap-2 px-2"
+    >
+      <!-- Game Name -->
+      <div class="field mt-2">
+        <label for="name" class="font-light block">Name</label>
+        <input
+          pInputText
+          id="name"
+          formControlName="gameName"
+          placeholder="Enter name"
+          class="w-full h-3rem p-2"
+        />
+        <small
+          class="text-red-500"
+          *ngIf="
+            gameForm.get('gameName')?.errors?.['required'] &&
+            gameForm.get('gameName')?.touched
+          "
+        >
+          Game name is required
+        </small>
+      </div>
+
+      <!-- Players Section -->
+      <div class="flex">
+        <div class="field col-6">
+          <label for="minPlayers" class="font-medium block mb-2"
+            >Min Players</label
+          >
+          <p-inputNumber
+            id="minPlayers"
+            formControlName="minPlayers"
+            [showButtons]="true"
+            [min]="1"
+            buttonLayout="horizontal"
+            decrementButtonClass="p-button-secondary"
+            incrementButtonClass="p-button-secondary"
+          ></p-inputNumber>
+          <small
+            class="text-red-500"
+            *ngIf="
+              gameForm.get('minPlayers')?.errors?.['required'] &&
+              gameForm.get('minPlayers')?.touched
+            "
+          >
+            Min players is required
+          </small>
+        </div>
+
+        <div class="field col-6">
+          <label for="maxPlayers" class="font-medium block mb-2"
+            >Max Players</label
+          >
+          <p-inputNumber
+            id="maxPlayers"
+            formControlName="maxPlayers"
+            [showButtons]="true"
+            [min]="1"
+            buttonLayout="horizontal"
+            decrementButtonClass="p-button-secondary"
+            incrementButtonClass="p-button-secondary"
+          ></p-inputNumber>
+          <small
+            class="text-red-500"
+            *ngIf="
+              gameForm.get('maxPlayers')?.errors?.['required'] &&
+              gameForm.get('maxPlayers')?.touched
+            "
+          >
+            Max players is required
+          </small>
+        </div>
+      </div>
+
+      <!-- Instances -->
+      <div class="field">
+        <label for="instances" class="font-medium block mb-2">Instances</label>
+        <p-inputNumber
+          id="instances"
+          formControlName="instances"
+          [showButtons]="true"
+          [min]="1"
+          buttonLayout="horizontal"
+          decrementButtonClass="p-button-secondary"
+          incrementButtonClass="p-button-secondary"
+        ></p-inputNumber>
+        <small
+          class="text-red-500"
+          *ngIf="
+            gameForm.get('instances')?.errors?.['required'] &&
+            gameForm.get('instances')?.touched
+          "
+        >
+          Instances is required
+        </small>
+      </div>
+
+      <!-- File Upload - Only show in Add mode -->
+      <div class="field" *ngIf="formType === 'add'">
+        <label class="font-medium block mb-2">Game Image</label>
+        <p-fileUpload
+          #fileUpload
+          mode="basic"
+          [auto]="true"
+          chooseLabel="Choose Image"
+          [maxFileSize]="1000000"
+          accept="image/*"
+          [showUploadButton]="false"
+          [showCancelButton]="true"
+          (onSelect)="onFileSelect($event)"
+          (onClear)="onFileClear()"
+          [class]="{
+            'ng-invalid ng-dirty':
+              gameForm.get('game_image')?.invalid &&
+              gameForm.get('game_image')?.touched,
+          }"
+        ></p-fileUpload>
+        <!-- Show selected file name -->
+        <div *ngIf="selectedFileName" class="text-sm text-600 mt-2">
+          Selected: {{ selectedFileName }}
+        </div>
+        <!-- Error message -->
+        <small
+          class="text-red-500"
+          *ngIf="
+            formType === 'add' &&
+            gameForm.get('game_image')?.invalid &&
+            gameForm.get('game_image')?.touched
+          "
+        >
+          Game image is required
+        </small>
+      </div>
+
+      <!-- Game Status -->
+      <div class="field">
+        <label class="font-medium block mb-3">Game Status</label>
+        <div class="flex align-items-center gap-2">
+          <p-inputSwitch
+            formControlName="isActive"
+            styleClass="mr-2"
+          ></p-inputSwitch>
+          <span class="text-sm">
+            {{
+              gameForm.get('isActive')?.value
+                ? 'Game is currently active'
+                : 'Game is currently inactive'
+            }}
+          </span>
+        </div>
+      </div>
+
+      <!-- Footer Buttons -->
+      <div class="flex justify-content-end gap-2 mt-4">
+        <p-button
+          type="button"
+          label="Cancel"
+          icon="pi pi-times"
+          (onClick)="$event.stopPropagation();cancelEdit()"
+          styleClass="p-button-secondary p-button-outlined"
+        ></p-button>
+        <p-button
+          type="submit"
+          [label]="label"
+          icon="pi pi-check"
+          [disabled]="gameForm.invalid"
+        ></p-button>
+      </div>
+    </form>
+  </p-dialog>
+
+  <div class="main-content-container">
+    <div class="w-9 h-full flex justify-content-center align-items-center">
+      <div class="w-full h-30rem border-left-3 flex flex-column">
+        <div
+          class="w-full flex items-center justify-content-between pl-4 h-6rem"
+        >
+          <div class="main-title">Games</div>
+          <div class="justify-content-end align-items-center flex w-full">
+            @if (isAdmin$()) {
+              <i
+                pTooltip="Add New Game"
+                class="prime-icon pi pi-plus-circle align-self-center p-2"
+                (click)="onAddGame()"
+                style="color: white; font-size: 1.5rem"
+              ></i>
+            }
+            <input
+              type="text"
+              class="search-bar ml-4"
+              placeholder="Search games"
+              [(ngModel)]="searchedGame"
+              (ngModelChange)="filterGames()"
+            />
+          </div>
+        </div>
+
+        <!-- photos-container -->
+
+        <div
+          class="photos-container flex gap-3 pl-4 overflow-x-auto overflow-y-hidden"
+        >
+          @if (filteredGames.length > 0) {
+            @for (game of filteredGames; track game.game_id) {
+              <div
+                class="photo-item flex flex-column h-full w-20rem justify-content-start align-items-center py-1"
+                (click)="onGameSelect(game)"
+              >
+                <div class="image-container flex-grow-1 w-full relative">
+                  <img [src]="game.image_url" class="image-container" />
+                  @if (isAdmin$()) {
+                    <i
+                      class="prime-icon absolute top-0 left-0 m-3 pi pi-pen-to-square icon cursor-pointer z-3"
+                      style="color: mediumslateblue"
+                      (click)="
+                        $event.stopPropagation(); onGameEdit($event, game)
+                      "
+                    ></i>
+                    <i
+                      class="prime-icon absolute top-0 right-0 m-3 pi pi-trash icon cursor-pointer z-3"
+                      style="color: red"
+                      (click)="
+                        $event.stopPropagation();
+                        onGameDelete($event, game.game_id)
+                      "
+                    ></i>
+                  }
+                </div>
+                <div
+                  class="h-1rem w-full flex justify-content-center align-items-center"
+                >
+                  {{ game.game_name }}
+                </div>
+              </div>
+            }
+          } @else {
+            <app-fallback>
+              <ng-container> No games 😭 </ng-container>
+            </app-fallback>
+          }
+        </div>
+        <!--        image container end-->
+      </div>
+    </div>
+  </div>
+</div>

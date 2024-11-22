@@ -1,0 +1,120 @@
+.native {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: -1; /* Positions it behind overlay content but above grid background */
+}
+
+.container {
+  background: rgba(0, 0, 0, 0.14); /* Slightly transparent white */
+  backdrop-filter: blur(10px); /* Blurs the background behind the container */
+  -webkit-backdrop-filter: blur(10px); /* For Safari support */
+  height: 40rem;
+  width: 24rem;
+  border-radius: 15px; /* Rounded corners */
+  border: 1px solid rgba(255, 255, 255, 0.2); /* Soft white border */
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.25); /* Subtle shadow for depth */
+  padding: 2rem; /* Padding for internal content */
+  color: white; /* Text color */
+}
+
+.overlay-content {
+  position: relative;
+  z-index: 1; /* Ensures it sits on top of .native */
+  height: 100vh;
+  width: 100vw;
+}
+
+.top-circle {
+  margin-right: 24rem;
+}
+
+.input-field {
+  margin-top: 30px;
+  margin-bottom: 20px;
+  box-shadow: none;
+}
+
+::ng-deep .p-dropdown {
+  width: 302.4px !important; /* Ensures the custom width overrides default styles */
+}
+
+.custom-blue-button {
+  /* Linear gradient background */
+  background: linear-gradient(0deg, #2e4cee 0%, #221ebf 53%, #040f75 100%);
+  font-family: 'Raleway', sans-serif;
+  color: white;
+  border: none;
+  box-shadow: none;
+  padding: 10px 20px;
+  font-size: 16px;
+  font-weight: lighter;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.custom-blue-button:hover {
+  /* Slightly lighter gradient on hover */
+  background: linear-gradient(0deg, #3a5bff 0%, #2b2ed1 53%, #131f87 100%);
+}
+
+.separator {
+  display: flex;
+  align-items: center;
+  text-align: center;
+  margin: 20px 0;
+}
+
+.separator::before,
+.separator::after {
+  content: '';
+  flex: 1;
+  border-bottom: 1px solid #ccc;
+}
+
+.separator:not(:empty)::before {
+  margin-right: 10px;
+}
+
+.separator:not(:empty)::after {
+  margin-left: 10px;
+}
+
+.separator span {
+  font-size: 16px;
+  padding: 0 10px;
+  background-color: transparent;
+  color: white;
+}
+
+.custom-link-text {
+  font-size: 14px;
+  font-family: 'Raleway', sans-serif;
+  color: white; /* Initial link color */
+  text-decoration: none; /* Remove underline */
+}
+
+.custom-link-text:hover {
+  color: #3a5bff; /* Hover color */
+  cursor: pointer;
+}
+
+/* Prevent color change on click */
+.custom-link-text:focus,
+.custom-link-text:active {
+  color: white; /* Keep color consistent on focus and click */
+  outline: none; /* Remove default outline */
+}
+/* Remember Me styling */
+.remember-me label {
+  font-family: 'Raleway', sans-serif;
+  color: #ffffff;
+  margin-left: 5px;
+  font-size: 14px;
+}

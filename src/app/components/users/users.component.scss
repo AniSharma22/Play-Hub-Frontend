@@ -1,0 +1,35 @@
+.table-header{
+  border-top-left-radius: 20px;
+  border-top-right-radius: 20px;
+  background-color: #4D4D4D;
+  color: white;
+}
+
+.table-content{
+  background-color: #1c1c1c;
+}
+
+.table-row:hover{
+  background-color: #292d32;
+  cursor: pointer;
+}
+
+::ng-deep .p-paginator{
+  background-color: #1c1c1c;
+  margin-top: 0.8rem;
+  padding-top: 4px;
+  padding-bottom: 4px;
+
+  .p-paginator-element{
+    height: 40px;
+    width: 40px;
+    border-radius: 22%;
+  }
+}
+
+
+
+
+
+
+

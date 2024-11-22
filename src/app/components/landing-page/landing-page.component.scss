@@ -1,0 +1,68 @@
+.p-button-success {
+  background-color: #530061 !important;
+  color: white !important;
+  font-family: 'Raleway', sans-serif;
+  border: none;
+  box-shadow:
+    0 0 8px #530061,
+    0 0 16px #530061,
+    0 0 32px rgba(83, 0, 97, 0.5),
+    0 0 64px rgba(83, 0, 97, 0.3);
+  animation: glowPulse 2s infinite alternate; /* Adds pulsing glow */
+}
+
+@keyframes glowPulse {
+  0% {
+    box-shadow:
+      0 0 8px #530061,
+      0 0 16px #530061,
+      0 0 32px rgba(83, 0, 97, 0.5),
+      0 0 64px rgba(83, 0, 97, 0.3);
+  }
+  100% {
+    box-shadow:
+      0 0 16px #530061,
+      0 0 32px #530061,
+      0 0 64px rgba(83, 0, 97, 0.5),
+      0 0 128px rgba(83, 0, 97, 0.3);
+  }
+}
+
+.p-button-success:hover {
+  background-color: #40004a !important;
+  border-color: black !important;
+}
+
+.my-heading {
+  font-size: 32px;
+  font-family: 'Raleway', sans-serif;
+  font-weight: bolder;
+  text-align: center;
+  letter-spacing: 1px;
+}
+
+.my-sub-heading {
+  font-size: 24px;
+  font-family: 'Raleway', sans-serif;
+  font-weight: 100;
+  opacity: 50%;
+  text-align: center;
+}
+
+.curved-line {
+  width: 100%;
+  height: 8px; /* Thickness of the line */
+  background-color: #530061;
+  position: relative;
+  z-index: -1;
+  box-shadow:
+    0 0 8px #530061,
+    0 0 16px #530061,
+    0 0 32px rgba(83, 0, 97, 0.5),
+    0 0 64px rgba(83, 0, 97, 0.3);
+  animation: glowPulse 2s infinite alternate; /* Pulsing glow effect */
+
+  /* Update curved shape */
+  border-radius: 50px;
+  overflow: hidden;
+}

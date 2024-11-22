@@ -1,0 +1,135 @@
+<div class="grid-background"></div>
+<div class="native">
+  <app-navbar />
+  @if(loading$()){
+    <app-spinner/>
+  }
+  <div class="main-content-container">
+    <div class="w-9 h-full flex justify-content-center align-items-center">
+      <div class="w-full h-30rem border-left-3 flex flex-column">
+        <div
+          class="w-full flex items-center justify-content-between pl-4 h-6rem"
+        >
+          <div class="main-title">Invitations</div>
+          <div class="card flex justify-content-center align-items-center">
+            <p-dropdown
+              [options]="invitationType"
+              [(ngModel)]="selectedInvitationType"
+              (onChange)="onInvitationTypeSelect()"
+              placeholder="Select a type"
+            />
+          </div>
+        </div>
+
+        <!-- invitation-container -->
+        <div class="flex flex-column gap-3 w-full overflow-y-auto pt-2 pl-4">
+          @if (invitations && invitations.length > 0) {
+            @for (
+              invitation of invitations;
+              track invitation.invitation_id
+            ) {
+              <div class="invitation-container flex align-items-center h-4rem">
+                <div
+                  class="w-5rem white-space-nowrap overflow-hidden text-overflow-ellipsis"
+                >
+                  <div
+                    class="w-2rem h-2rem relative border-circle overflow-hidden"
+                  >
+                    <img
+                      [src]="invitation.image_url"
+                      alt="Table Tennis"
+                      class="w-full h-full object-fit-cover"
+                    />
+                  </div>
+                </div>
+                <div
+                  class="w-10rem white-space-nowrap overflow-hidden text-overflow-ellipsis"
+                >
+                  {{ invitation.game }}
+                </div>
+                <div
+                  class="w-5rem white-space-nowrap overflow-hidden text-overflow-ellipsis flex justify-content-center"
+                >
+                  |
+                </div>
+                <div
+                  class="w-10rem white-space-nowrap overflow-hidden text-overflow-ellipsis flex justify-content-center"
+                >
+                  {{ invitation.start_time | timePipe }} -
+                  {{ invitation.end_time | timePipe }}
+                </div>
+                <div
+                  class="w-5rem white-space-nowrap overflow-hidden text-overflow-ellipsis flex justify-content-center"
+                >
+                  |
+                </div>
+                <div
+                  class="w-auto max-w-30rem white-space-nowrap overflow-hidden text-overflow-ellipsis flex align-items-center gap-2"
+                >
+                  {{ invitation.invited_by }}
+                  <i
+                    class="pi pi-info-circle cursor-pointer"
+                    [pTooltip]="tooltipContent"
+                    [tooltipStyleClass]="'custom-tooltip'"
+                  >
+                  </i>
+                  <ng-template #tooltipContent>
+                    <div class="flex flex-column gap-2 h-full w-full">
+                      <div class="font-bold">Booked Users:</div>
+                      @for (user of invitation.booked_users; track $index) {
+                        <div class="flex align-items-center gap-2">
+                          <img
+                            [src]="user.user_image"
+                            alt=""
+                            style="
+                              width: 32px;
+                              height: 32px;
+                              border-radius: 50%;
+                            "
+                          />
+                          <span>{{ user.user_name }}</span>
+                        </div>
+                      }
+                    </div>
+                  </ng-template>
+                </div>
+                <div
+                  class="flex-grow-1 flex gap-4 white-space-nowrap overflow-hidden text-overflow-ellipsis flex justify-content-end align-items-center pr-4"
+                >
+                  @if(selectedInvitationType === InvitationType.pending){
+                    <div (click)="onAccept(invitation.invitation_id)">
+                      <i
+                        class="pi pi-check-circle icons"
+                        style="font-size: 1.5rem; color: greenyellow"
+                      ></i>
+                    </div>
+                    <div (click)="onReject(invitation.invitation_id)">
+                      <i
+                        class="pi pi-times-circle icons"
+                        style="font-size: 1.7rem; color: orangered"
+                      ></i>
+                    </div>
+                  } @else {
+                    <p-button
+                      class="p-0"
+                      label="Cancel"
+                      (click)="onCancelInvitation(invitation.invitation_id)"
+                      [text]="true"
+                      severity="danger"
+                    />
+                  }
+                </div>
+              </div>
+            }
+          } @else {
+            <app-fallback>
+              <ng-container> No Invitations 😶 </ng-container>
+            </app-fallback>
+          }
+        </div>
+
+        <!--        invitation container end-->
+      </div>
+    </div>
+  </div>
+</div>

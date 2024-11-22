@@ -1,0 +1,60 @@
+.invitation-container {
+  /* Glass effect background */
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+
+  /* Gradient shadow for a 3D effect */
+  background: linear-gradient(
+    145deg,
+    rgba(255, 255, 255, 0.1) 0%,
+    rgba(255, 255, 255, 0.05) 50%,
+    rgba(0, 0, 0, 0.3) 100%
+  );
+
+  /* Rest of the styling */
+  border-radius: 25px;
+  padding: 2rem;
+  font-size: large;
+  color: white;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow:
+    0 15px 45px rgba(0, 0, 0, 0.6),
+    inset 0 0 10px rgba(0, 0, 0, 0.4);
+  transition:
+    transform 0.3s ease,
+    box-shadow 0.3s ease;
+}
+
+.invitation-container:hover {
+  box-shadow:
+    0 20px 55px rgba(0, 0, 0, 0.8),
+    inset 0 0 15px rgba(0, 0, 0, 0.5);
+
+  border-top: 1px solid white;
+}
+
+.icons:hover {
+  transform: scale(1.1);
+  cursor: pointer;
+}
+
+.icons:active {
+  transform: scale(1.15);
+}
+
+::ng-deep {
+  img {
+    object-fit: cover;
+  }
+}
+
+.pi-info-circle {
+  color: #2196f3;
+  font-size: 1.1rem;
+  transition: color 0.2s;
+
+  &:hover {
+    color: #1976d2;
+  }
+}

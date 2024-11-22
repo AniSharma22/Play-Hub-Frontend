@@ -1,0 +1,133 @@
+<div class="grid-background"></div>
+<div class="native">
+  <app-navbar />
+  @if (loading$()) {
+    <app-spinner />
+  }
+  <div class="main-content-container">
+    <div class="w-9 h-full flex justify-content-center align-items-center">
+      <div class="w-full h-30rem border-left-3 flex flex-column">
+        <div
+          class="w-full flex items-center justify-content-between pl-4 h-6rem"
+        >
+          <div class="main-title">Bookings</div>
+          <div class="card flex justify-content-center align-items-center">
+            <p-dropdown
+              [options]="bookingType"
+              [(ngModel)]="selectedBookingType"
+              (onChange)="onBookingTypeSelect()"
+              placeholder="Select a type"
+            />
+          </div>
+        </div>
+
+        <div class="flex w-full flex-column gap-3 overflow-y-scroll mt-2">
+          @if (bookings() && bookings()?.length! > 0) {
+            @for (booking of bookings(); track booking.booking_id) {
+              <div
+                class="booking-container flex justify-content-start align-items-center h-4rem ml-4 mr-2"
+              >
+                <div class="w-10 flex align-items-center">
+                  <!-- Game Icon - Fixed width -->
+                  <div class="w-5rem flex-none">
+                    <div
+                      class="w-2rem h-2rem relative border-circle overflow-hidden"
+                    >
+                      <img
+                        [src]="booking.image_url"
+                        alt="Table Tennis"
+                        class="w-full h-full object-fit-cover"
+                      />
+                    </div>
+                  </div>
+
+                  <!-- Game Name - Fixed width -->
+                  <div class="w-10rem flex-none">
+                    <div
+                      class="overflow-hidden text-overflow-ellipsis whitespace-nowrap"
+                    >
+                      {{ booking.game }}
+                    </div>
+                  </div>
+
+                  <!-- Separator -->
+                  <div class="pl-2 pr-4 flex-none">|</div>
+
+                  <!-- Time Range - Fixed width -->
+                  <div class="w-10rem flex justify-content-center">
+                    <div
+                      class="overflow-hidden text-overflow-ellipsis whitespace-nowrap"
+                    >
+                      {{ booking.start_time | timePipe }} -
+                      {{ booking.end_time | timePipe }}
+                    </div>
+                  </div>
+
+                  <!-- Separator -->
+                  <div class="px-4 flex-none">|</div>
+
+                  <!-- Date and Users - Fixed width -->
+                  <div class="w-11rem flex justify-content-center">
+                    <div
+                      class="flex align-items-center overflow-hidden text-overflow-ellipsis whitespace-nowrap"
+                    >
+                      {{ booking.date | date }}
+                      <i
+                        class="pi pi-info-circle cursor-pointer px-2"
+                        [pTooltip]="tooltipContent"
+                        [tooltipStyleClass]="'custom-tooltip'"
+                      >
+                      </i>
+                      <ng-template #tooltipContent>
+                        <div class="flex flex-column gap-2">
+                          <div class="font-bold">Booked Users:</div>
+                          @for (user of booking.booked_users; track $index) {
+                            <div class="flex align-items-center gap-2">
+                              <span>{{ user }}</span>
+                            </div>
+                          }
+                        </div>
+                      </ng-template>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="w-2 flex-none flex gap-2">
+                  <!-- Actions - Fixed width -->
+                  @if (selectedBookingType == BookingType.pendingResults) {
+                    <p-button
+                      class="p-0"
+                      label="Won"
+                      (click)="onWin(booking.game_id, booking.booking_id)"
+                      [text]="true"
+                      severity="success"
+                    />
+                    <p-button
+                      class="p-0"
+                      label="Lost"
+                      (click)="onLoss(booking.game_id, booking.booking_id)"
+                      [text]="true"
+                      severity="danger"
+                    />
+                  } @else {
+                    <p-button
+                      class="p-0"
+                      label="Cancel"
+                      (click)="onCancelBooking(booking.booking_id)"
+                      [text]="true"
+                      severity="danger"
+                    />
+                  }
+                </div>
+              </div>
+            }
+          } @else {
+            <app-fallback class="ml-4">
+              <ng-container>No bookings 😒</ng-container>
+            </app-fallback>
+          }
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,38 @@
+<div class="grid-background"></div>
+<div class="native">
+  <app-navbar />
+  <div class="flex justify-content-center flex-column align-items-center">
+    <div
+      class="w-9 h-auto flex justify-content-center align-items-center flex-column gap-4"
+    >
+      <div
+        class="flex mt-8 flex-column justify-content-center align-items-center my-heading"
+      >
+        <span>BOOK. PLAY.</span>
+        <span>DOMINATE THE SANDBOX</span>
+      </div>
+      <div
+        class="flex flex-column justify-content-center align-items-center my-sub-heading"
+      >
+        <span>Join the WatchGuard Noida gaming community </span>
+        <span>with over 200 competitive players</span>
+      </div>
+    </div>
+    <div class="m-4">
+      <button
+        pButton
+        pRipple
+        label="PLAY NOW"
+        class="p-button-success"
+        (click)="onPlayNow()"
+      ></button>
+    </div>
+    <div class="flex gap-4">
+      <img ngSrc="./assets/tt.png" width="256" height="320" priority />
+      <img ngSrc="./assets/air.png" width="256" height="320" priority />
+    </div>
+    <div class="w-full flex justify-content-center">
+      <div class="curved-line"></div>
+    </div>
+  </div>
+</div>
