@@ -6,9 +6,6 @@ import { Pipe, PipeTransform } from '@angular/core';
 export class FullTimePipe implements PipeTransform {
   transform(value: Date | string | null): string {
     if (!value) return '';
-    if (typeof value === 'string') {
-      return value;
-    }
     const date = typeof value === 'string' ? new Date(value) : value;
 
     return date.toLocaleTimeString('en-GB', {

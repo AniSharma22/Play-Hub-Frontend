@@ -73,7 +73,7 @@ export class InvitationService implements OnDestroy {
   }
 
   createInvitationPoll() {
-    this.intervalId = interval(30000).subscribe(() => {
+    this.intervalId = interval(10000).subscribe(() => {
       this.getPendingInvitationStatus().subscribe((status: boolean): void => {
         this.isInvitationPending$.set(status);
       });

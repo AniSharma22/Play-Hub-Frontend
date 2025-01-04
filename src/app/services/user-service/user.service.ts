@@ -5,31 +5,41 @@ import { User, UserResponse, UsersResponse } from '../../models/user.models';
 import { BASE_URL } from '../../shared/constants/constants';
 
 import { Observable, tap } from 'rxjs';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 
 @Injectable({
   providedIn: 'root',
 })
-
 export class UserService {
   selectedUser: User | null = null;
   constructor(private httpClient: HttpClient) {}
 
-  getAllUsers(limit:number=10,offset:number=0,substring:string=""): Observable<UsersResponse> {
-    return this.httpClient.get<UsersResponse>(`${BASE_URL}/users?limit=${limit}&offset=${offset}&substring=${substring}`).pipe(
-      tap((response: UsersResponse) => {
-        if (response.users) {
-          response.users = response.users.map((user: User) => ({
-            ...user,
-            created_at: new Date(user.created_at),
-            updated_at: new Date(user.updated_at),
-          }));
-        }
-      })
-    );
+  getAllUsers(
+    limit: number = 10,
+    offset: number = 0,
+    substring: string = ''
+  ): Observable<UsersResponse> {
+    return this.httpClient
+      .get<UsersResponse>(
+        `${BASE_URL}/users?limit=${limit}&offset=${offset}&substring=${substring}`
+      )
+      .pipe(
+        tap((response: UsersResponse) => {
+          if (response.users) {
+            response.users = response.users.map((user: User) => ({
+              ...user,
+              created_at: new Date(user.created_at),
+              updated_at: new Date(user.updated_at),
+            }));
+          }
+        })
+      );
   }
 
   getAllUsersPublic(slotId: string): Observable<UsersResponse> {
-    return this.httpClient.get<UsersResponse>(`${BASE_URL}/users/public?slotId=${slotId}`);
+    return this.httpClient.get<UsersResponse>(
+      `${BASE_URL}/users/public?slotId=${slotId}`
+    );
   }
 
   sendInvite(

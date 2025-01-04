@@ -14,11 +14,24 @@ import { ProfileComponent } from './components/profile/profile.component';
 import { AuthGuard } from './shared/guards/auth-guard/auth.guard';
 import { UserDetailsGuard } from './shared/guards/User-Details-Guard/user-details.guard';
 import { LoginGuard } from './shared/guards/login-guard/login-guard.guard';
+import { ForgotPasswordComponent } from './components/forgot-password/forgot-password.component';
+import { ResetPasswordComponent } from './components/reset-password/reset-password.component';
+import { LogoutGuard } from './shared/guards/logout-guard/logout.guard';
 
 export const routes: Routes = [
   {
     path: '',
     component: LandingPageComponent,
+  },
+  {
+    path: 'forgot-password',
+    component: ForgotPasswordComponent,
+    canActivate: [LogoutGuard],
+  },
+  {
+    path: 'reset-password',
+    component: ResetPasswordComponent,
+    canActivate: [LogoutGuard],
   },
   {
     path: 'login',

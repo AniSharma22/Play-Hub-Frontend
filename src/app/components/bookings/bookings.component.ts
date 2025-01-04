@@ -47,7 +47,7 @@ export class BookingsComponent implements OnInit {
         this.bookings.set(data.bookings);
       },
       error: (error: HttpErrorResponse): void => {
-        console.log(error);
+        this.toastService.showError(error.error.message);
       },
     });
   }

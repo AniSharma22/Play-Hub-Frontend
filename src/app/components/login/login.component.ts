@@ -6,6 +6,8 @@ import { AuthService } from '../../services/auth-service/auth.service';
 import { ToastService } from '../../services/toast-service/toast.service';
 import { httpError, LoginResponse } from '../../models/auth.models';
 import { InvitationService } from '../../services/invitation-service/invitation.service';
+import { HttpErrorResponse } from '@angular/common/http';
+import { CustomValidators } from '../../shared/custom-validator/custom-validators';
 
 @Component({
   selector: 'app-login',
@@ -23,7 +25,7 @@ export class LoginComponent {
   ) {}
 
   form = new FormGroup({
-    email: new FormControl<string>('', [Validators.required, Validators.email]),
+    email: new FormControl<string>('', [Validators.required, CustomValidators.isValidEmail(),]),
     password: new FormControl<string>('', Validators.required),
   });
 
@@ -43,7 +45,7 @@ export class LoginComponent {
           this.invitationService.createInvitationPoll();
           this.router.navigate(['home']);
         },
-        error: (error: httpError): void => {
+        error: (error: HttpErrorResponse): void => {
           this.toastService.showError(error.error.message);
           this.loading = false;
         },

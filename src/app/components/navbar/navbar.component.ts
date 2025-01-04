@@ -38,6 +38,7 @@ export class NavbarComponent {
 
   onLogout(): void {
     this.authService.loggedIn$.set(false);
+    this.authService.user$.set(null);
     localStorage.removeItem('authToken');
     this.invitationService.removeInvitationPoll();
     this.router.navigate(['']);

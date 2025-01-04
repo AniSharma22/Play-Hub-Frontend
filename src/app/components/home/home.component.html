@@ -37,8 +37,8 @@
       </div>
 
       <!-- Players Section -->
-      <div class="flex">
-        <div class="field col-6">
+      <div class="flex gap-2">
+        <div class="">
           <label for="minPlayers" class="font-medium block mb-2"
             >Min Players</label
           >
@@ -62,7 +62,7 @@
           </small>
         </div>
 
-        <div class="field col-6">
+        <div>
           <label for="maxPlayers" class="font-medium block mb-2"
             >Max Players</label
           >
@@ -86,6 +86,12 @@
           </small>
         </div>
       </div>
+      <small
+        class="text-red-500"
+        *ngIf="gameForm.get('maxPlayers')?.errors?.['maxPlayersTooLow']"
+      >
+        Max players must be greater than min players
+      </small>
 
       <!-- Instances -->
       <div class="field">
@@ -171,7 +177,7 @@
           type="button"
           label="Cancel"
           icon="pi pi-times"
-          (onClick)="$event.stopPropagation();cancelEdit()"
+          (onClick)="$event.stopPropagation(); cancelEdit()"
           styleClass="p-button-secondary p-button-outlined"
         ></p-button>
         <p-button

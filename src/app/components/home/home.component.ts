@@ -16,6 +16,7 @@ import {
 } from '../../shared/constants/constants';
 
 import { ConfirmationService } from 'primeng/api';
+import { CustomValidators } from '../../shared/custom-validator/custom-validators';
 
 @Component({
   selector: 'app-home',
@@ -79,6 +80,8 @@ export class HomeComponent implements OnInit {
     const controls = this.gameForm.controls;
 
     if (isAdd) {
+      this.gameForm.controls.maxPlayers.enable();
+      this.gameForm.controls.minPlayers.enable();
       // add validators while adding a new game
       controls.gameName.setValidators([Validators.required]);
       controls.minPlayers.setValidators([
@@ -88,6 +91,7 @@ export class HomeComponent implements OnInit {
       controls.maxPlayers.setValidators([
         Validators.required,
         Validators.min(1),
+        CustomValidators.maxPlayersValidator("minPlayers")
       ]);
       controls.instances.setValidators([
         Validators.required,
@@ -197,6 +201,8 @@ export class HomeComponent implements OnInit {
 
   cancelEdit(): void {
     this.gameForm.reset();
+    this.gameForm.controls.minPlayers.enable();
+    this.gameForm.controls.maxPlayers.enable();
     this.visible = false;
     this.selectedFileName = '';
     this.selectedGame = null;
@@ -248,7 +254,7 @@ export class HomeComponent implements OnInit {
     }
   }
 
-  filterGames() {
+  filterGames(): void {
     if (!this.searchedGame.trim()) {
       // If search is empty, show all games
         this.filteredGames = [...this.games];

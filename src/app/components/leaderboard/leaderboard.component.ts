@@ -8,6 +8,7 @@ import {
   LeaderboardDTO,
   LeaderboardResponse,
 } from '../../models/leaderboard.model';
+import { ToastService } from '../../services/toast-service/toast.service';
 
 @Component({
   selector: 'app-leaderboard',
@@ -21,13 +22,13 @@ export class LeaderboardComponent implements OnInit {
 
   constructor(
     private gameService: GameService,
-    private leaderboardService: LeaderboardService
+    private leaderboardService: LeaderboardService,
+    private toastService: ToastService
   ) {}
 
   ngOnInit(): void {
     this.gameService.getAllGames().subscribe({
       next: (data: GameResponse): void => {
-        console.log(data);
         this.games = data.games ?? undefined;
         if (data.games?.[0]) {
           this.selectedGame = data.games[0];
@@ -35,22 +36,20 @@ export class LeaderboardComponent implements OnInit {
         }
       },
       error: (error: HttpErrorResponse): void => {
-        console.log(error);
+        this.toastService.showError(error.error.message);
       },
     });
   }
 
   onGameSelect(): void {
-    console.log(this.selectedGame);
     this.leaderboardService
       .getGameLeaderboard(this.selectedGame?.game_id!)
       .subscribe({
         next: (data: LeaderboardResponse): void => {
-          console.log(data);
           this.leaderboard = data.leaderboard;
         },
         error: (error: HttpErrorResponse): void => {
-          console.log(error);
+          this.toastService.showError(error.error.message);
         },
       });
   }

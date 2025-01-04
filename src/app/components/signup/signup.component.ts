@@ -8,6 +8,7 @@ import { ToastService } from '../../services/toast-service/toast.service';
 import { Gender } from '../../models/models';
 import { SignupResponse } from '../../models/auth.models';
 import { CustomValidators } from '../../shared/custom-validator/custom-validators';
+import { InvitationService } from '../../services/invitation-service/invitation.service';
 
 @Component({
   selector: 'app-signup',
@@ -42,7 +43,8 @@ export class SignupComponent {
   constructor(
     private authService: AuthService,
     private router: Router,
-    private toastService: ToastService
+    private toastService: ToastService,
+    private invitationService: InvitationService
   ) {}
 
   onSubmit(): void {
@@ -57,9 +59,12 @@ export class SignupComponent {
         next: (response: SignupResponse): void => {
           this.toastService.showSuccess('Signup Successful');
           localStorage.setItem('authToken', response.token);
+          this.authService.role$.set(response.role);
+          this.authService.loggedIn$.set(true);
+          this.loadInvitationStatus();
+          this.invitationService.createInvitationPoll();
           this.loading = false;
           this.router.navigate(['home']);
-          this.authService.loggedIn$.set(true);
         },
         error: (error: HttpErrorResponse): void => {
           this.toastService.showError(error.error.message);
@@ -67,5 +72,13 @@ export class SignupComponent {
         },
       });
     }
+  }
+
+  private loadInvitationStatus(): void {
+    this.invitationService.getPendingInvitationStatus().subscribe({
+      next: (response: boolean): void => {
+        this.invitationService.isInvitationPending$.set(response);
+      },
+    });
   }
 }

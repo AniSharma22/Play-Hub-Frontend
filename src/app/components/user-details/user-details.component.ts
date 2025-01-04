@@ -60,7 +60,6 @@ export class UserDetailsComponent implements OnInit {
       .getUserGameStats(this.currentUser?.user_id!, this.selectedGame?.game_id!)
       .subscribe({
         next: (data: UserStatsResponse) => {
-          console.log(data);
           this.currentUserStats = data.stats;
         },
         error: (error: HttpErrorResponse) => {
@@ -99,7 +98,6 @@ export class UserDetailsComponent implements OnInit {
     const averageMinutesPerDay =
       diffDays > 0 ? totalMinutesPlayed / diffDays : 0;
 
-    console.log(averageMinutesPerDay.toFixed(1));
     // Round to 1 decimal place and return as string
     return averageMinutesPerDay.toFixed(1) + 'min';
   }

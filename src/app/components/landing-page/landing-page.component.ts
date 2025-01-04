@@ -15,8 +15,7 @@ export class LandingPageComponent {
   ) {}
 
   onPlayNow() {
-    if (localStorage.getItem('authToken')) {
-      this.authService.loggedIn$.set(true);
+    if (this.authService.loggedIn$()) {
       this.router.navigate(['home']);
     } else {
       this.router.navigate(['login']);

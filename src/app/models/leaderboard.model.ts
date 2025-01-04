@@ -1,12 +1,3 @@
-import { User } from './user.models';
-
-export type LeaderboardDTO = {
-  user_name: string;
-  total_games: number;
-  wins: number;
-  losses: number;
-  score: number;
-};
 
 export type UserStats = {
   score_id: string;
@@ -22,10 +13,18 @@ export type UserStatsResponse = {
   code: number;
   message: string;
   stats: UserStats;
-}
+};
 
 export type LeaderboardResponse = {
   code: number;
   message: string;
   leaderboard: LeaderboardDTO[];
+};
+
+export type LeaderboardDTO = {
+  user_name: string;
+  total_games: number;
+  wins: number;
+  losses: number;
+  score: number;
 };

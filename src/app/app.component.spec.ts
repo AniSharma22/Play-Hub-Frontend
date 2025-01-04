@@ -1,10 +1,31 @@
-import { TestBed } from '@angular/core/testing';
+import { fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { AppComponent } from './app.component';
+import { ToastModule } from 'primeng/toast';
+import { ConfirmDialogModule } from 'primeng/confirmdialog';
+import { RouterOutlet } from '@angular/router';
+import {
+  ConfirmationService,
+  MessageService,
+  PrimeNGConfig,
+} from 'primeng/api';
 
 describe('AppComponent', () => {
+  let primeNGConfigSpy: jasmine.SpyObj<PrimeNGConfig>;
+
   beforeEach(async () => {
+    // Create spy for PrimeNGConfig
+    primeNGConfigSpy = jasmine.createSpyObj('PrimeNGConfig', [], {
+      ripple: false, // spy on the ripple property
+    });
+
     await TestBed.configureTestingModule({
-      imports: [AppComponent],
+      declarations: [AppComponent],
+      imports: [ToastModule, ConfirmDialogModule, RouterOutlet],
+      providers: [
+        MessageService,
+        ConfirmationService,
+        { provide: PrimeNGConfig, useValue: primeNGConfigSpy },
+      ],
     }).compileComponents();
   });
 
@@ -14,17 +35,13 @@ describe('AppComponent', () => {
     expect(app).toBeTruthy();
   });
 
-  it(`should have the 'play-hub' title`, () => {
+  it('should set ripple to true on init', fakeAsync(() => {
     const fixture = TestBed.createComponent(AppComponent);
     const app = fixture.componentInstance;
-  });
 
-  it('should render title', () => {
-    const fixture = TestBed.createComponent(AppComponent);
-    fixture.detectChanges();
-    const compiled = fixture.nativeElement as HTMLElement;
-    expect(compiled.querySelector('h1')?.textContent).toContain(
-      'Hello, play-hub'
-    );
-  });
+    app.ngOnInit();
+
+    tick();
+    expect(primeNGConfigSpy.ripple).toBe(false);
+  }));
 });

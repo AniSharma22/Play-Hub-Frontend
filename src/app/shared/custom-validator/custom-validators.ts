@@ -34,11 +34,31 @@ export class CustomValidators {
   }
 
   // Validator to check if password and confirm password match
-  static matchPassword(passwordControlName: string, confirmPasswordControlName: string): ValidatorFn {
+  static matchPassword(
+    passwordControlName: string,
+    confirmPasswordControlName: string
+  ): ValidatorFn {
     return (control: AbstractControl): ValidationErrors | null => {
       const password = control.get(passwordControlName)?.value;
       const confirmPassword = control.get(confirmPasswordControlName)?.value;
       return password === confirmPassword ? null : { passwordMismatch: true };
+    };
+  }
+
+  // Validator to check if password and confirm password match
+  static maxPlayersValidator(minPlayersControlName: string): ValidatorFn {
+    return (form: AbstractControl): ValidationErrors | null => {
+      const minPlayers = form.get(minPlayersControlName)?.value;
+      const maxPlayers = form.get('maxPlayers')?.value;
+
+      // Only validate if both values are numbers
+      if (minPlayers != null && maxPlayers != null) {
+        return maxPlayers > minPlayers
+          ? null
+          : { maxPlayersTooLow: true };
+      }
+
+      return null;
     };
   }
 }

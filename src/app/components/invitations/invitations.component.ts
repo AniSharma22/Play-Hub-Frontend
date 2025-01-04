@@ -15,7 +15,7 @@ import {
   styleUrl: './invitations.component.scss',
 })
 export class InvitationsComponent implements OnInit {
-  loading$ = signal<boolean>(false)
+  loading$ = signal<boolean>(false);
   invitations: Invitation[] | null = null;
   invitationType: [InvitationType, InvitationType] | undefined = [
     InvitationType.pending,
@@ -99,14 +99,14 @@ export class InvitationsComponent implements OnInit {
     this.loading$.set(true);
     this.invitationService.acceptInvitation(invitationId).subscribe({
       next: (response: HttpResponse<{ code: number; message: string }>) => {
-          this.toastService.showSuccess(response.body?.message!);
-          this.invitations = this.invitations?.filter(
-            (invitation: Invitation) =>
-              invitation.invitation_id !== invitationId
-          )!;
-          if (this.invitations?.length == 0) {
-            this.invitationService.isInvitationPending$.set(false);
-          }
+        this.toastService.showSuccess(response.body?.message!);
+        this.invitations = this.invitations?.filter(
+          (invitation: Invitation) => invitation.invitation_id !== invitationId
+        )!;
+        if (this.invitations?.length == 0) {
+          this.invitationService.isInvitationPending$.set(false);
+        }
+        this.loading$.set(false);
       },
       error: (error: HttpErrorResponse) => {
         this.loading$.set(false);
@@ -119,16 +119,14 @@ export class InvitationsComponent implements OnInit {
     this.loading$.set(true);
     this.invitationService.rejectInvitation(invitationId).subscribe({
       next: (response: HttpResponse<{ code: number; message: string }>) => {
-
-          this.invitations = this.invitations?.filter(
-            (invitation: Invitation) =>
-              invitation.invitation_id !== invitationId
-          )!;
+        this.invitations = this.invitations?.filter(
+          (invitation: Invitation) => invitation.invitation_id !== invitationId
+        )!;
         this.loading$.set(false);
         this.toastService.showSuccess(response.body?.message!);
-          if (this.invitations?.length == 0) {
-            this.invitationService.isInvitationPending$.set(false);
-          }
+        if (this.invitations?.length == 0) {
+          this.invitationService.isInvitationPending$.set(false);
+        }
       },
       error: (error: HttpErrorResponse) => {
         this.loading$.set(false);

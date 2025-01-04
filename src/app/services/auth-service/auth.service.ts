@@ -18,6 +18,7 @@ export class AuthService {
   user$ = signal<User | null>(null);
   loggedIn$ = signal<boolean>(this.hasValidToken());
   role$ = signal<Role>(Role.user);
+  forgotPasswordEmail$ = signal<string>('');
 
   constructor(
     private httpClient: HttpClient,
@@ -75,5 +76,28 @@ export class AuthService {
       phone_no: userDetails.phoneNo.toString(),
       gender: userDetails.gender,
     });
+  }
+
+  forgotPassword(email: string): Observable<{ code: number; message: string }> {
+    return this.httpClient.post<{ code: number; message: string }>(
+      `${BASE_URL}/auth/forgot-password`,
+      {
+        email: email,
+      }
+    );
+  }
+
+  resetPassword(
+    password: string,
+    otp: string
+  ): Observable<{ code: number; message: string }> {
+    return this.httpClient.post<{ code: number; message: string }>(
+      `${BASE_URL}/auth/reset-password`,
+      {
+        email: this.forgotPasswordEmail$(),
+        password: password,
+        otp: otp,
+      }
+    );
   }
 }

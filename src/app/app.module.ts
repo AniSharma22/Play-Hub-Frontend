@@ -13,7 +13,7 @@ import {
 import {
   HTTP_INTERCEPTORS,
   HttpClientModule,
-  provideHttpClient,
+  provideHttpClient, withInterceptorsFromDi,
 } from '@angular/common/http';
 
 import { routes } from './app.routes';
@@ -62,6 +62,10 @@ import { InputSwitchModule } from 'primeng/inputswitch';
 import { PaginatorModule } from 'primeng/paginator';
 import { FileUploadModule } from 'primeng/fileupload';
 import { TooltipModule } from 'primeng/tooltip';
+import { ForgotPasswordComponent } from './components/forgot-password/forgot-password.component';
+import { ResetPasswordComponent } from './components/reset-password/reset-password.component';
+import { InputOtpModule } from 'primeng/inputotp';
+import { LogoutGuard } from './shared/guards/logout-guard/logout.guard';
 
 @NgModule({
   declarations: [
@@ -77,6 +81,8 @@ import { TooltipModule } from 'primeng/tooltip';
     GameComponent,
     UsersComponent,
     UserDetailsComponent,
+    ForgotPasswordComponent,
+    ResetPasswordComponent,
     ProfileComponent,
     SpinnerComponent,
     FallbackComponent,
@@ -120,6 +126,7 @@ import { TooltipModule } from 'primeng/tooltip';
     CommonModule,
     FileUploadModule,
     TooltipModule,
+    InputOtpModule,
   ],
   providers: [
     {
@@ -127,8 +134,10 @@ import { TooltipModule } from 'primeng/tooltip';
       useClass: AuthInterceptor,
       multi: true,
     },
+    provideHttpClient(
+      withInterceptorsFromDi()
+    ),
     provideRouter(routes, withComponentInputBinding()),
-    provideHttpClient(),
     MessageService,
     ConfirmationService,
   ],

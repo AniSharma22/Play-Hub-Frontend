@@ -10,11 +10,11 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 
 import { UserService } from '../../services/user-service/user.service';
 import { AuthService } from '../../services/auth-service/auth.service';
+import { ToastService } from '../../services/toast-service/toast.service';
 import { AVATARS } from '../../shared/constants/constants';
 import { User } from '../../models/user.models';
 import { CustomValidators } from '../../shared/custom-validator/custom-validators';
 
-import { MessageService } from 'primeng/api';
 import { OverlayPanel } from 'primeng/overlaypanel';
 
 @Component({
@@ -41,7 +41,7 @@ export class ProfileComponent implements OnInit {
   constructor(
     private authService: AuthService,
     private userService: UserService,
-    private messageService: MessageService
+    private toastService: ToastService
   ) {
     effect((): void => {
       this.initializeForm(this.user());
@@ -55,7 +55,6 @@ export class ProfileComponent implements OnInit {
 
   private initializeForm(currentUser: User | null): void {
     if (currentUser) {
-      console.log(currentUser);
       this.form.patchValue({
         username: currentUser.username,
         phoneNo: currentUser.mobile_number,
@@ -113,11 +112,7 @@ export class ProfileComponent implements OnInit {
         )
         .subscribe({
           next: (): void => {
-            this.messageService.add({
-              severity: 'success',
-              summary: 'Success',
-              detail: 'Details updated successfully',
-            });
+            this.toastService.showSuccess('details updated successfully');
             const currUser: User | null = this.user();
             // TODO: Fix the type issue
             // @ts-ignore

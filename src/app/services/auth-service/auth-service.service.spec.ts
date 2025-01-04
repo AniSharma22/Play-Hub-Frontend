@@ -37,7 +37,6 @@ describe('AuthService', () => {
     'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiZXhwIjoxODE2MjM5MDIyfQ.f0AIqQZcicNfbEwmW1MRxBmIGTENoHy7MtNZBJu3CT4';
 
   beforeEach(() => {
-
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
       providers: [AuthService],
@@ -130,6 +129,62 @@ describe('AuthService', () => {
       password: testUserDetails.password,
       phone_no: testUserDetails.phoneNo.toString(),
       gender: testUserDetails.gender,
+    });
+    req.flush(mockResponse);
+  });
+
+
+  it('should successfully send a forgot-password request to the backend', (done: DoneFn) => {
+
+    const testEmail = "test.test@watchguard.com"
+    const mockResponse = {
+      code: 200,
+      message: "test"
+    };
+
+    authService = TestBed.inject(AuthService);
+
+    authService.forgotPassword(testEmail).subscribe({
+      next: (response) => {
+        expect(response).toEqual(mockResponse);
+        done();
+      },
+    });
+
+    const req = httpTestingController.expectOne(`${BASE_URL}/auth/forgot-password`);
+    expect(req.request.method).toBe('POST');
+    expect(req.request.body).toEqual({
+      email: testEmail,
+    });
+    req.flush(mockResponse);
+  });
+
+  it('should successfully send a reset-password request to the backend', (done: DoneFn) => {
+
+    const testRequestBody = {
+      email : "test.test@watchguard.com",
+      password: "password123",
+      otp: "121212",
+    }
+
+    const mockResponse = {
+      code: 200,
+      message: "test"
+    };
+
+    authService = TestBed.inject(AuthService);
+
+    authService.resetPassword(testRequestBody.password, testRequestBody.otp).subscribe({
+      next: (response) => {
+        expect(response).toEqual(mockResponse);
+        done();
+      },
+    });
+
+    const req = httpTestingController.expectOne(`${BASE_URL}/auth/reset-password`);
+    expect(req.request.method).toBe('POST');
+    expect(req.request.body).toEqual({
+      testRequestBody
     });
     req.flush(mockResponse);
   });
