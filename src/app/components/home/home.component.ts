@@ -33,6 +33,7 @@ export class HomeComponent implements OnInit {
   selectedFileName: string = '';
   filteredGames: Game[] = [];
   searchedGame: string = '';
+  loading: boolean = false;
 
   role$ = computed(() => this.authService.role$());
   isAdmin$ = computed(() => this.role$() === Role.admin);
@@ -133,14 +134,22 @@ export class HomeComponent implements OnInit {
       acceptIcon: ICONS.NONE,
       rejectIcon: ICONS.NONE,
       accept: (): void => {
+        this.loading = true;
         this.gameService.deleteGame(gameId).subscribe({
           next: (data) => {
             if (data.status === 200) {
+              this.loading = false;
+              this.games = this.games.filter(
+                (game: Game) => game.game_id !== gameId
+              );
+              this.filteredGames = this.filteredGames.filter(
+                (game: Game) => game.game_id !== gameId
+              );
               this.toastService.showSuccess('Game Deleted Successfully');
-              this.games = this.games.filter((game: Game)=> game.game_id !== gameId);
             }
           },
           error: (error: HttpErrorResponse) => {
+            this.loading = false;
             this.toastService.showError(error.error.message);
           },
         });
@@ -210,6 +219,7 @@ export class HomeComponent implements OnInit {
 
   saveGameDetails(): void {
     if (this.gameForm.valid) {
+      this.loading = true;
       const formData = new FormData();
       const formValue = this.gameForm.value;
 
@@ -243,11 +253,13 @@ export class HomeComponent implements OnInit {
 
       request$.subscribe({
         next: (response): void => {
+          this.loading = false;
           this.toastService.showSuccess(response.body.message);
           this.visible = false;
           this.ngOnInit();
         },
         error: (error: HttpErrorResponse): void => {
+          this.loading = false;
           this.toastService.showError(error.error.message);
         },
       });

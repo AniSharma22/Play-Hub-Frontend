@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit, signal, ViewChild } from '@angular/core';
+import { Component, computed, OnDestroy, OnInit, signal, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { HttpErrorResponse } from '@angular/common/http';
 
@@ -30,6 +30,7 @@ export class GameComponent implements OnInit, OnDestroy {
   currentTime$ = signal(new Date());
   currentTimeRef: any = null;
   loading$ = signal<boolean>(false);
+  selectedGameName$ = computed(()=> this.gameService.selectedGame$()?.game_name)
   @ViewChild('op') overlayPanel: OverlayPanel | undefined;
 
   constructor(

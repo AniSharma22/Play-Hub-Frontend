@@ -73,20 +73,19 @@ describe('LeaderboardComponent', () => {
     leaderboardServiceSpy = jasmine.createSpyObj('LeaderboardService', [
       'getGameLeaderboard',
     ]);
-    toastServiceSpy = jasmine.createSpyObj('ToastService',['showError']);
+    toastServiceSpy = jasmine.createSpyObj('ToastService', ['showError']);
 
     await TestBed.configureTestingModule({
-      imports: [FormsModule, ReactiveFormsModule], // Add FormsModule for ngModel
+      imports: [FormsModule, ReactiveFormsModule],
       declarations: [LeaderboardComponent],
       providers: [
         { provide: GameService, useValue: gameServiceSpy },
         { provide: LeaderboardService, useValue: leaderboardServiceSpy },
+        { provide: ToastService, useValue: toastServiceSpy }
       ],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
     }).compileComponents();
-  });
 
-  beforeEach(() => {
     fixture = TestBed.createComponent(LeaderboardComponent);
     component = fixture.componentInstance;
   });
@@ -96,17 +95,15 @@ describe('LeaderboardComponent', () => {
   });
 
   describe('ngOnInit', () => {
-    it('should fetch games and set first game as selected on successful response', () => {
-      // Setup spies
+    beforeEach(() => {
+      // Setup default successful responses
       gameServiceSpy.getAllGames.and.returnValue(of(mockGames));
-      leaderboardServiceSpy.getGameLeaderboard.and.returnValue(
-        of(mockLeaderboard)
-      );
+      leaderboardServiceSpy.getGameLeaderboard.and.returnValue(of(mockLeaderboard));
+    });
 
-      // Trigger ngOnInit
+    it('should fetch games and set first game as selected on successful response', () => {
       fixture.detectChanges();
 
-      // Verify the results
       expect(component.games).toEqual(mockGames.games!);
       expect(component.selectedGame).toEqual(mockGames.games![0]);
       expect(leaderboardServiceSpy.getGameLeaderboard).toHaveBeenCalledWith(
@@ -147,17 +144,15 @@ describe('LeaderboardComponent', () => {
 
     it('should handle error in getting games', () => {
       const errorResponse = new HttpErrorResponse({
-        error: 'test error',
+        error: { message: 'Failed to fetch games' },
         status: 404,
         statusText: 'Not Found',
       });
       gameServiceSpy.getAllGames.and.returnValue(throwError(() => errorResponse));
 
-      const consoleSpy = spyOn(console, 'log');
-
       fixture.detectChanges();
 
-      expect(consoleSpy).toHaveBeenCalledWith(errorResponse);
+      expect(toastServiceSpy.showError).toHaveBeenCalledWith('Failed to fetch games');
       expect(component.games).toBeUndefined();
       expect(component.selectedGame).toBeUndefined();
       expect(leaderboardServiceSpy.getGameLeaderboard).not.toHaveBeenCalled();
@@ -166,15 +161,12 @@ describe('LeaderboardComponent', () => {
 
   describe('onGameSelect', () => {
     beforeEach(() => {
-      component.games = mockGames.games!;
-      component.selectedGame = mockGames.games![0];
+      // Set up successful response by default
+      leaderboardServiceSpy.getGameLeaderboard.and.returnValue(of(mockLeaderboard));
     });
 
     it('should fetch leaderboard for selected game on successful response', () => {
-      leaderboardServiceSpy.getGameLeaderboard.and.returnValue(
-        of(mockLeaderboard)
-      );
-
+      component.selectedGame = mockGames.games![0];
       component.onGameSelect();
 
       expect(leaderboardServiceSpy.getGameLeaderboard).toHaveBeenCalledWith(
@@ -184,8 +176,9 @@ describe('LeaderboardComponent', () => {
     });
 
     it('should handle error in getting leaderboard', () => {
+      component.selectedGame = mockGames.games![0];
       const errorResponse = new HttpErrorResponse({
-        error: 'test error',
+        error: { message: 'Failed to fetch leaderboard' },
         status: 404,
         statusText: 'Not Found',
       });
@@ -193,11 +186,9 @@ describe('LeaderboardComponent', () => {
         throwError(() => errorResponse)
       );
 
-      const consoleSpy = spyOn(console, 'log');
-
       component.onGameSelect();
 
-      expect(consoleSpy).toHaveBeenCalledWith(errorResponse);
+      expect(toastServiceSpy.showError).toHaveBeenCalledWith('Failed to fetch leaderboard');
       expect(leaderboardServiceSpy.getGameLeaderboard).toHaveBeenCalledWith(
         mockGames.games![0].game_id
       );
@@ -206,9 +197,7 @@ describe('LeaderboardComponent', () => {
 
     it('should not call getGameLeaderboard if no game is selected', () => {
       component.selectedGame = undefined;
-
       component.onGameSelect();
-
       expect(leaderboardServiceSpy.getGameLeaderboard).not.toHaveBeenCalled();
     });
   });

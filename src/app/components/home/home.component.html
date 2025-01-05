@@ -1,6 +1,9 @@
 <div class="grid-background"></div>
 <div class="native">
   <app-navbar />
+  @if(loading){
+    <app-spinner/>
+  }
 
   <p-dialog
     [header]="header"
